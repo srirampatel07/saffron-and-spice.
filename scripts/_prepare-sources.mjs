@@ -65,15 +65,27 @@ for (const [slug, title, artist, license, licenseUrl, page] of commons) {
   api.searchParams.set('titles', title);
   api.searchParams.set('prop', 'imageinfo');
   api.searchParams.set('iiprop', 'url|size|mime');
+  api.searchParams.set('iiurlwidth', '1600');
   api.searchParams.set('format', 'json');
   const data = await fetchJson(api);
   const pageData = Object.values(data.query.pages)[0];
   if (!pageData || pageData.missing !== undefined) throw new Error(`Missing Commons file: ${title}`);
   const info = pageData.imageinfo[0];
-  const targetWidth = Math.max(400, Math.min(1600, info.width - 1));
-  const downloadUrl = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(
-    title.replace(/^File:/, ''),
-  )}?width=${targetWidth}`;
+  const smallWidths = {
+    'amritsari-paneer-tikka': 960,
+    'samosa-chaat': 1200,
+    'murgh-malai-tikka': 960,
+    'tandoori-jhinga': 800,
+    'sarson-salmon-tikka': 800,
+    'subz-biryani': 1200,
+    'burnt-onion-raita': 800,
+  };
+  const fallbackWidth = smallWidths[slug] || Math.min(1600, info.width - 1);
+  const downloadUrl = info.thumburl?.includes('thumb.wikimedia.org')
+    ? info.thumburl
+    : `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(
+        title.replace(/^File:/, ''),
+      )}?width=${fallbackWidth}`;
   downloads.push({
     slug,
     use: slug,
