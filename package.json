@@ -1,0 +1,34 @@
+{
+  "name": "saffron-and-spice",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Saffron & Spice — a premium Indian restaurant ordering experience (demo).",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c yellow,cyan \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace @saffron-spice/server",
+    "dev:client": "npm run dev --workspace @saffron-spice/client",
+    "seed": "npm run seed --workspace @saffron-spice/server",
+    "generate:images": "node scripts/generate-images.mjs",
+    "test": "npm run test --workspace @saffron-spice/server",
+    "lint": "eslint .",
+    "build": "npm run build --workspace @saffron-spice/client",
+    "start": "npm run start --workspace @saffron-spice/server"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "sharp": "^0.35.5"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

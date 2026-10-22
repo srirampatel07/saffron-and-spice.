@@ -1,0 +1,29 @@
+/* Page-level styles are grouped here as pages are built. */
+.not-found {
+  min-height: 56vh;
+}
+
+.not-found__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.7rem;
+}
+
+.not-found__actions .btn {
+  margin-top: 0;
+}
+
+@media (max-width: 480px) {
+  .not-found__actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .not-found__actions .btn {
+    width: 100%;
+  }
+}

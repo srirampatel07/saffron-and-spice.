@@ -1,0 +1,22 @@
+import { Outlet } from 'react-router-dom';
+import CartDrawer from './CartDrawer';
+import Footer from './Footer';
+import Navbar from './Navbar';
+import ScrollToTop from './ScrollToTop';
+
+export default function Layout() {
+  return (
+    <div className="site-shell">
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+      <Navbar />
+      <main id="main-content" className="site-main" tabIndex={-1}>
+        <Outlet />
+      </main>
+      <Footer />
+      <CartDrawer />
+      <ScrollToTop />
+    </div>
+  );
+}
