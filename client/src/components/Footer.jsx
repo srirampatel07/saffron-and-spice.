@@ -28,13 +28,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link className="footer__link" to="/#story">
+                <Link className="footer__link" to="/story">
                   Our story
                 </Link>
               </li>
               <li>
                 <Link className="footer__link" to="/track">
                   Track an order
+                </Link>
+              </li>
+              <li>
+                <Link className="footer__link" to="/credits">
+                  Photo credits
                 </Link>
               </li>
               <li>

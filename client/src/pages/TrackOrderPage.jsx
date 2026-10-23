@@ -16,6 +16,7 @@ import {
 } from '../components/Icons';
 import OrderReceipt from '../components/OrderReceipt';
 import OrderTimeline from '../components/OrderTimeline';
+import SafeImage from '../components/SafeImage';
 import { restaurant } from '../config';
 import { useToast } from '../context/toast';
 import { api } from '../lib/api';
@@ -28,7 +29,6 @@ import {
   paymentIsPending,
 } from '../lib/orderStatus';
 import { payForOrder } from '../lib/razorpay';
-import usePageTitle from '../lib/usePageTitle';
 import { normalizeIndianPhone } from '../lib/validation';
 
 const ORDER_NUMBER_HINT = 'SS-261022-C7BD1F';
@@ -47,7 +47,6 @@ function validateLookup(values) {
 }
 
 export default function TrackOrderPage() {
-  usePageTitle('Track your order');
   const [searchParams] = useSearchParams();
   const { push } = useToast();
   const remembered = useRef(readRememberedOrder());
@@ -200,7 +199,14 @@ export default function TrackOrderPage() {
           </div>
           <div className="track-hero__art" aria-hidden="true">
             <div className="track-hero__ring" />
-            <img src="/images/story-spice.svg" alt="" width="420" height="420" />
+            <SafeImage
+              src="/images/story-spice.webp"
+              alt=""
+              width="900"
+              height="1100"
+              loading="lazy"
+              decoding="async"
+            />
             <span className="track-hero__stamp">Cooked fresh · Sent warm</span>
           </div>
         </div>

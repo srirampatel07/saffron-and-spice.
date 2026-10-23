@@ -13,7 +13,7 @@ export default [
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: { ...globals.browser },
+      globals: { ...globals.browser, __SITE_URL__: 'readonly' },
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
@@ -41,7 +41,7 @@ export default [
     },
   },
   {
-    files: ['*.config.js', 'vite.config.js', 'scripts/**/*.mjs'],
+    files: ['*.config.js', 'client/vite.config.js', 'vite.config.js', 'scripts/**/*.mjs'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

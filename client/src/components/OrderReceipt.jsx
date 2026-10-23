@@ -1,4 +1,5 @@
 import { formatMoney, formatPhone } from '../lib/format';
+import SafeImage from './SafeImage';
 import { PAYMENT_METHOD_LABELS, PAYMENT_STATUS_META } from '../lib/orderStatus';
 
 export default function OrderReceipt({ order }) {
@@ -7,7 +8,7 @@ export default function OrderReceipt({ order }) {
       <ul className="order-receipt__items">
         {order.items.map((item) => (
           <li key={`${item.menuItemId}-${item.name}`} className="order-receipt__item">
-            <img src={item.image} alt="" width="56" height="56" loading="lazy" />
+            <SafeImage src={item.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
             <div>
               <strong>{item.name}</strong>
               <span>

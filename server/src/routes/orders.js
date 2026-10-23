@@ -10,34 +10,51 @@ import {
   quoteOrder,
 } from '../services/orders.js';
 
-const itemSchema = z.object({
-  menuItemId: z.coerce.number().int().positive(),
-  quantity: z.coerce.number().int().min(1).max(orderRules.maxQuantityPerItem),
-});
+const ORDER_NUMBER_INPUT = /^SS-\d{6}-[A-F0-9]{6}$/i;
 
-const quoteSchema = z.object({
-  items: z.array(itemSchema).min(1).max(orderRules.maxDistinctItems),
-});
+const itemSchema = z
+  .object({
+    menuItemId: z.number().int().positive(),
+    quantity: z.number().int().min(1).max(orderRules.maxQuantityPerItem),
+  })
+  .strict();
 
-const createSchema = z.object({
-  items: z.array(itemSchema).min(1).max(orderRules.maxDistinctItems),
-  customer: z.object({
-    name: z.string().trim().min(2, 'Enter your full name.').max(80, 'Please use a shorter name.'),
+const quoteSchema = z
+  .object({
+    items: z.array(itemSchema).min(1).max(orderRules.maxDistinctItems),
+  })
+  .strict();
+
+const createSchema = z
+  .object({
+    items: z.array(itemSchema).min(1).max(orderRules.maxDistinctItems),
+    customer: z
+      .object({
+        name: z.string().trim().min(2, 'Enter your full name.').max(80, 'Please use a shorter name.'),
+        phone: z.string().trim().min(10).max(16),
+        address: z
+          .string()
+          .trim()
+          .min(10, 'Enter a delivery address with at least 10 characters.')
+          .max(300, 'Please keep the address under 300 characters.'),
+        notes: z
+          .string()
+          .trim()
+          .max(300, 'Please keep notes under 300 characters.')
+          .optional()
+          .default(''),
+      })
+      .strict(),
+    paymentMethod: z.enum(['cod', 'razorpay']),
+  })
+  .strict();
+
+const lookupSchema = z
+  .object({
+    orderNumber: z.string().trim().regex(ORDER_NUMBER_INPUT, 'Enter a valid order number.'),
     phone: z.string().trim().min(10).max(16),
-    address: z
-      .string()
-      .trim()
-      .min(10, 'Enter a delivery address with at least 10 characters.')
-      .max(300, 'Please keep the address under 300 characters.'),
-    notes: z.string().trim().max(300, 'Please keep notes under 300 characters.').optional().default(''),
-  }),
-  paymentMethod: z.enum(['cod', 'razorpay']),
-});
-
-const lookupSchema = z.object({
-  orderNumber: z.string().trim().min(6).max(40),
-  phone: z.string().trim().min(10).max(16),
-});
+  })
+  .strict();
 
 function validationError(result) {
   return createHttpError(

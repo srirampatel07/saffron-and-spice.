@@ -2,8 +2,20 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from '../lib/api';
 import { MenuContext } from './menu';
 
-export function MenuProvider({ children }) {
-  const [state, setState] = useState({ status: 'loading', categories: [], items: [], error: null });
+export function MenuProvider({ children, initialMenu = null }) {
+  const [state, setState] = useState(() => {
+    if (initialMenu && Array.isArray(initialMenu.items) && initialMenu.items.length > 0) {
+      return {
+        status: 'ready',
+        categories: Array.isArray(initialMenu.categories) ? initialMenu.categories : [],
+        items: initialMenu.items,
+        error: null,
+      };
+    }
+    return { status: 'loading', categories: [], items: [], error: null };
+  });
+
+  const hasInitialMenu = Boolean(initialMenu && Array.isArray(initialMenu.items) && initialMenu.items.length > 0);
 
   const load = useCallback(async ({ signal, silent = false } = {}) => {
     setState((current) => ({
@@ -32,9 +44,9 @@ export function MenuProvider({ children }) {
 
   useEffect(() => {
     const controller = new AbortController();
-    load({ signal: controller.signal });
+    load({ signal: controller.signal, silent: hasInitialMenu });
     return () => controller.abort();
-  }, [load]);
+  }, [load, hasInitialMenu]);
 
   const refresh = useCallback(() => load({ silent: true }), [load]);
 

@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import { ArrowRight, Utensils } from '../components/Icons';
-import usePageTitle from '../lib/usePageTitle';
 
 export default function NotFoundPage() {
-  usePageTitle('Page not found');
   return (
     <section className="section container">
       <div className="empty-state not-found">

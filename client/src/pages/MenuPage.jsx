@@ -7,7 +7,6 @@ import { ArrowRight, Close, Search, Sparkles } from '../components/Icons';
 import { useCart } from '../context/cart';
 import { useMenu } from '../context/menu';
 import { formatMoney, pluralize } from '../lib/format';
-import usePageTitle from '../lib/usePageTitle';
 
 function CardSkeleton() {
   return (
@@ -28,7 +27,6 @@ function CardSkeleton() {
 }
 
 export default function MenuPage() {
-  usePageTitle('Menu');
   const { categories, items, isLoading, status, error, refresh } = useMenu();
   const cart = useCart();
   const [searchParams, setSearchParams] = useSearchParams();

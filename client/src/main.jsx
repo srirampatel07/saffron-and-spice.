@@ -10,6 +10,7 @@ import './styles/components.css';
 import './styles/dish.css';
 import './styles/cart.css';
 import './styles/pages.css';
+import './styles/credits.css';
 import './styles/home.css';
 import './styles/menu.css';
 import './styles/checkout.css';
@@ -19,12 +20,15 @@ import App from './App';
 import { ToastProvider } from './context/ToastContext';
 import { MenuProvider } from './context/MenuContext';
 import { CartProvider } from './context/CartContext';
+import { readInitialMenu } from './lib/initialMenu';
+
+const initialMenu = readInitialMenu();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
-        <MenuProvider>
+        <MenuProvider initialMenu={initialMenu}>
           <CartProvider>
             <App />
           </CartProvider>

@@ -5,6 +5,7 @@ import Badge from './Badge';
 import Button from './Button';
 import { Flame, Plus } from './Icons';
 import QuantityControl from './QuantityControl';
+import SafeImage from './SafeImage';
 import VegBadge from './VegBadge';
 
 const SPICE_LABELS = ['', 'Mild', 'Medium', 'Fiery'];
@@ -37,11 +38,11 @@ export default function DishCard({ dish, compact = false }) {
   return (
     <article className={`dish-card${compact ? ' dish-card--compact' : ''}${!dish.isAvailable ? ' dish-card--soldout' : ''}`}>
       <div className="dish-card__media">
-        <img
+        <SafeImage
           src={dish.image}
           alt={dish.name}
-          width="960"
-          height="720"
+          width="800"
+          height="600"
           loading="lazy"
           decoding="async"
         />

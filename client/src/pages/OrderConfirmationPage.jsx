@@ -12,7 +12,6 @@ import { formatDateTime, formatMoney, formatPhone } from '../lib/format';
 import { rememberOrder, readRememberedOrder } from '../lib/orderMemory';
 import { PAYMENT_STATUS_META, paymentIsPending } from '../lib/orderStatus';
 import { payForOrder } from '../lib/razorpay';
-import usePageTitle from '../lib/usePageTitle';
 
 export default function OrderConfirmationPage() {
   const { orderNumber } = useParams();
@@ -26,8 +25,6 @@ export default function OrderConfirmationPage() {
   const [lookupError, setLookupError] = useState(null);
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState(null);
-
-  usePageTitle(order ? `Order ${order.orderNumber}` : 'Your order');
 
   useEffect(() => {
     if (order) return undefined;

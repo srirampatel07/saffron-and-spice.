@@ -10,18 +10,38 @@ import {
 } from '../lib/adminAuth.js';
 import { createHttpError } from '../lib/errors.js';
 import {
+  ORDER_NUMBER_PATTERN,
   ORDER_STATUSES,
   listOrders,
   updateOrderStatus,
 } from '../services/orders.js';
 
-const loginSchema = z.object({
-  password: z.string().min(1).max(200),
-});
+const loginSchema = z
+  .object({
+    password: z.string().min(1).max(200),
+  })
+  .strict();
 
-const statusSchema = z.object({
-  status: z.string().refine((value) => ORDER_STATUSES.includes(value), 'Invalid order status.'),
-});
+const statusSchema = z
+  .object({
+    status: z.string().refine((value) => ORDER_STATUSES.includes(value), 'Invalid order status.'),
+  })
+  .strict();
+
+const listQuerySchema = z
+  .object({
+    status: z.string().refine((value) => ORDER_STATUSES.includes(value), 'Invalid order status.').optional(),
+  })
+  .strict();
+
+const orderNumberParamsSchema = z
+  .object({
+    orderNumber: z.string().trim().regex(ORDER_NUMBER_PATTERN, 'Invalid order number.'),
+  })
+  .strict();
+
+const FAILED_LOGIN_DELAY_MS = 250;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -48,7 +68,7 @@ function requireAdmin(req, res, next) {
   }
 
   const token = parseBearerToken(req.get('authorization'));
-  if (!verifyAdminToken(token, config.adminPassword)) {
+  if (!verifyAdminToken(token, config.adminTokenSigningKey)) {
     next(createHttpError(401, 'Your admin session is invalid or has expired. Sign in again.', 'UNAUTHORIZED'));
     return;
   }
@@ -64,7 +84,7 @@ export function adminRouter(db) {
     next();
   });
 
-  router.post('/login', loginLimiter, (req, res) => {
+  router.post('/login', loginLimiter, async (req, res) => {
     if (!config.adminEnabled) {
       throw createHttpError(
         503,
@@ -78,29 +98,37 @@ export function adminRouter(db) {
       throw createHttpError(400, 'Enter the admin password.', 'VALIDATION_ERROR');
     }
     if (!verifyAdminPassword(result.data.password, config.adminPassword)) {
+      // Slow failed guesses without changing the response shape. The IP limit
+      // remains the primary control; this is defence in depth.
+      await sleep(FAILED_LOGIN_DELAY_MS);
       throw createHttpError(401, 'That password is not correct.', 'INVALID_PASSWORD');
     }
 
-    const session = issueAdminToken(config.adminPassword);
+    const session = issueAdminToken(config.adminTokenSigningKey);
     res.json({ token: session.token, expiresAt: session.expiresAt });
   });
 
   router.get('/orders', requireAdmin, (req, res) => {
-    const status = typeof req.query.status === 'string' ? req.query.status : undefined;
-    if (status && !ORDER_STATUSES.includes(status)) {
+    const query = listQuerySchema.safeParse(req.query);
+    if (!query.success) {
       throw createHttpError(400, 'Invalid order status filter.', 'INVALID_STATUS');
     }
 
-    res.json(listOrders(db, { status }));
+    res.json(listOrders(db, { status: query.data.status }));
   });
 
   router.patch('/orders/:orderNumber/status', requireAdmin, (req, res) => {
+    const params = orderNumberParamsSchema.safeParse(req.params);
+    if (!params.success) {
+      throw createHttpError(400, 'Invalid order number.', 'INVALID_ORDER_NUMBER');
+    }
+
     const result = statusSchema.safeParse(req.body);
     if (!result.success) {
       throw createHttpError(400, 'Choose a valid order status.', 'INVALID_STATUS');
     }
 
-    const order = updateOrderStatus(db, req.params.orderNumber, result.data.status);
+    const order = updateOrderStatus(db, params.data.orderNumber, result.data.status);
     res.json({ order });
   });
 

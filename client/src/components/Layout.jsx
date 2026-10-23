@@ -3,10 +3,12 @@ import CartDrawer from './CartDrawer';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import ScrollToTop from './ScrollToTop';
+import Seo from './Seo';
 
 export default function Layout() {
   return (
     <div className="site-shell">
+      <Seo />
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>

@@ -6,6 +6,7 @@ import Button from './Button';
 import Drawer from './Drawer';
 import { ArrowRight, Check, Trash, Truck } from './Icons';
 import QuantityControl from './QuantityControl';
+import SafeImage from './SafeImage';
 import VegBadge from './VegBadge';
 
 export default function CartDrawer() {
@@ -106,7 +107,14 @@ export default function CartDrawer() {
           <ul className="cart__lines">
             {cart.lines.map((line) => (
               <li key={line.id} className={`cart-line${!line.isAvailable ? ' cart-line--soldout' : ''}`}>
-                <img className="cart-line__image" src={line.image} alt="" width="78" height="78" />
+                <SafeImage
+                  className="cart-line__image"
+                  src={line.image}
+                  alt=""
+                  width="78"
+                  height="78"
+                  decoding="async"
+                />
                 <div className="cart-line__content">
                   <div className="cart-line__heading">
                     <div>

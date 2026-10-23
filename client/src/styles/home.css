@@ -682,7 +682,7 @@
   position: absolute;
   top: 1rem;
   right: 1.25rem;
-  color: rgba(60, 35, 21, 0.1);
+  color: rgba(60, 35, 21, 0.52);
   font-family: var(--font-display);
   font-size: clamp(2.8rem, 2rem + 2.5vw, 4rem);
   font-variant-numeric: tabular-nums;

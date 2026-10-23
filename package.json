@@ -14,9 +14,13 @@
     "dev:client": "npm run dev --workspace @saffron-spice/client",
     "seed": "npm run seed --workspace @saffron-spice/server",
     "generate:images": "node scripts/generate-images.mjs",
+    "generate:og": "node scripts/generate-og.mjs",
+    "generate:responsive": "node scripts/generate-responsive.mjs",
     "test": "npm run test --workspace @saffron-spice/server",
     "lint": "eslint .",
-    "build": "npm run build --workspace @saffron-spice/client",
+    "build:client": "npm run build --workspace @saffron-spice/client",
+    "build": "npm run build:client && node scripts/prerender.mjs",
+    "check:seo": "node scripts/check-seo.mjs",
     "start": "npm run start --workspace @saffron-spice/server"
   },
   "devDependencies": {

@@ -8,6 +8,28 @@ function getOrderEntity(payload) {
   return payload?.payload?.order?.entity || null;
 }
 
+function getEventEntity(payload) {
+  return getPaymentEntity(payload) || getOrderEntity(payload);
+}
+
+/**
+ * A signed event is only applied to the local order it actually belongs to.
+ * The provider order ID must match, the currency must be INR, and the paid
+ * amount must equal the server-calculated order total.
+ */
+function eventMatchesOrder(orderRow, entity) {
+  if (!orderRow || orderRow.payment_method !== 'razorpay') return false;
+  if (!orderRow.razorpay_order_id || !entity) return false;
+
+  const providerOrderId = entity.order_id || entity.id;
+  if (!providerOrderId || providerOrderId !== orderRow.razorpay_order_id) return false;
+
+  if (entity.currency && String(entity.currency).toUpperCase() !== 'INR') return false;
+
+  const amount = Number(entity.amount_paid ?? entity.amount);
+  return Number.isInteger(amount) && amount === orderRow.total_paise;
+}
+
 function findOrderRow(db, razorpayOrderId, notesOrderNumber) {
   if (razorpayOrderId) {
     const row = db
@@ -39,18 +61,20 @@ export function processWebhookEvent(db, { eventId, eventType, payload }) {
 
     const payment = getPaymentEntity(payload);
     const order = getOrderEntity(payload);
-    const razorpayOrderId = payment?.order_id || order?.id || null;
+    const entity = getEventEntity(payload);
+    const razorpayOrderId = entity?.order_id || entity?.id || null;
     const notesOrderNumber = payment?.notes?.orderNumber || order?.notes?.orderNumber || null;
-    const orderRow = findOrderRow(db, razorpayOrderId, notesOrderNumber);
+    const candidate = findOrderRow(db, razorpayOrderId, notesOrderNumber);
+    const orderRow = eventMatchesOrder(candidate, entity) ? candidate : null;
     let handled = false;
 
     if (eventType === 'payment.captured' || eventType === 'order.paid') {
       if (orderRow) {
-        markOrderPaid(db, {
+        const paid = markOrderPaid(db, {
           orderNumber: orderRow.order_number,
           razorpayPaymentId: payment?.id || null,
         });
-        handled = true;
+        handled = Boolean(paid);
       }
     } else if (eventType === 'payment.failed') {
       if (orderRow) {

@@ -48,7 +48,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-amritsari-paneer-tikka.svg',
+    image: '/images/dish-amritsari-paneer-tikka.webp',
     sortOrder: 1,
   },
   {
@@ -61,7 +61,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: true,
     isAvailable: true,
-    image: '/images/dish-lucknowi-galouti-kebab.svg',
+    image: '/images/dish-lucknowi-galouti-kebab.webp',
     sortOrder: 2,
   },
   {
@@ -74,7 +74,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-dahi-ke-kebab.svg',
+    image: '/images/dish-dahi-ke-kebab.webp',
     sortOrder: 3,
   },
   {
@@ -87,7 +87,7 @@ export const menuItems = [
     spiceLevel: 3,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-chettinad-pepper-chicken.svg',
+    image: '/images/dish-chettinad-pepper-chicken.webp',
     sortOrder: 4,
   },
   {
@@ -100,7 +100,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-samosa-chaat.svg',
+    image: '/images/dish-samosa-chaat.webp',
     sortOrder: 5,
   },
   {
@@ -113,7 +113,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: true,
     isAvailable: true,
-    image: '/images/dish-murgh-malai-tikka.svg',
+    image: '/images/dish-murgh-malai-tikka.webp',
     sortOrder: 1,
   },
   {
@@ -126,7 +126,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-tandoori-broccoli.svg',
+    image: '/images/dish-tandoori-broccoli.webp',
     sortOrder: 2,
   },
   {
@@ -139,7 +139,7 @@ export const menuItems = [
     spiceLevel: 2,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-kashmiri-seekh-kebab.svg',
+    image: '/images/dish-kashmiri-seekh-kebab.webp',
     sortOrder: 3,
   },
   {
@@ -152,7 +152,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-bharwan-aloo.svg',
+    image: '/images/dish-bharwan-aloo.webp',
     sortOrder: 4,
   },
   {
@@ -165,7 +165,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-tandoori-jhinga.svg',
+    image: '/images/dish-tandoori-jhinga.webp',
     sortOrder: 5,
   },
   {
@@ -178,7 +178,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: false,
-    image: '/images/dish-sarson-salmon-tikka.svg',
+    image: '/images/dish-sarson-salmon-tikka.webp',
     sortOrder: 6,
   },
   {
@@ -191,7 +191,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: true,
     isAvailable: true,
-    image: '/images/dish-butter-chicken.svg',
+    image: '/images/dish-butter-chicken.webp',
     sortOrder: 1,
   },
   {
@@ -204,7 +204,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-dal-makhani.svg',
+    image: '/images/dish-dal-makhani.webp',
     sortOrder: 2,
   },
   {
@@ -217,7 +217,7 @@ export const menuItems = [
     spiceLevel: 2,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-paneer-lababdar.svg',
+    image: '/images/dish-paneer-lababdar.webp',
     sortOrder: 3,
   },
   {
@@ -243,7 +243,7 @@ export const menuItems = [
     spiceLevel: 2,
     isFeatured: false,
     isAvailable: false,
-    image: '/images/dish-malabar-prawn-curry.svg',
+    image: '/images/dish-malabar-prawn-curry.webp',
     sortOrder: 5,
   },
   {
@@ -256,7 +256,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-tamil-nadu-vegetable-kurma.svg',
+    image: '/images/dish-tamil-nadu-vegetable-kurma.webp',
     sortOrder: 6,
   },
   {
@@ -269,7 +269,7 @@ export const menuItems = [
     spiceLevel: 2,
     isFeatured: true,
     isAvailable: true,
-    image: '/images/dish-hyderabadi-dum-biryani.svg',
+    image: '/images/dish-hyderabadi-dum-biryani.webp',
     sortOrder: 1,
   },
   {
@@ -282,7 +282,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-awadhi-lamb-biryani.svg',
+    image: '/images/dish-awadhi-lamb-biryani.webp',
     sortOrder: 2,
   },
   {
@@ -295,7 +295,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-subz-biryani.svg',
+    image: '/images/dish-subz-biryani.webp',
     sortOrder: 3,
   },
   {
@@ -308,7 +308,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-paneer-tikka-biryani.svg',
+    image: '/images/dish-paneer-tikka-biryani.webp',
     sortOrder: 4,
   },
   {
@@ -321,7 +321,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-jeera-pulao.svg',
+    image: '/images/dish-jeera-pulao.webp',
     sortOrder: 5,
   },
   {
@@ -334,7 +334,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-garlic-naan.svg',
+    image: '/images/dish-garlic-naan.webp',
     sortOrder: 1,
   },
   {
@@ -347,7 +347,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-laccha-paratha.svg',
+    image: '/images/dish-laccha-paratha.webp',
     sortOrder: 2,
   },
   {
@@ -373,7 +373,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-burnt-onion-raita.svg',
+    image: '/images/dish-burnt-onion-raita.webp',
     sortOrder: 4,
   },
   {
@@ -386,7 +386,7 @@ export const menuItems = [
     spiceLevel: 1,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-papad-and-pickle.svg',
+    image: '/images/dish-papad-and-pickle.webp',
     sortOrder: 5,
   },
   {
@@ -412,7 +412,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-kesar-pista-kulfi.svg',
+    image: '/images/dish-kesar-pista-kulfi.webp',
     sortOrder: 2,
   },
   {
@@ -425,7 +425,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-shahi-tukda.svg',
+    image: '/images/dish-shahi-tukda.webp',
     sortOrder: 3,
   },
   {
@@ -438,7 +438,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-mango-cardamom-lassi.svg',
+    image: '/images/dish-mango-cardamom-lassi.webp',
     sortOrder: 4,
   },
   {
@@ -451,7 +451,7 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: false,
     isAvailable: true,
-    image: '/images/dish-nimbu-pudina-soda.svg',
+    image: '/images/dish-nimbu-pudina-soda.webp',
     sortOrder: 5,
   },
 ];

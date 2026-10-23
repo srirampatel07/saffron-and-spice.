@@ -28,6 +28,12 @@ export const restaurant = {
   social: {
     instagram: 'https://instagram.com',
   },
+  seo: {
+    // The address, phone, service area and hours above are demo placeholders.
+    // Only turn this on once real, verified local-business details replace
+    // them; the structured data omits those fields while this is false.
+    emitBusinessDetails: false,
+  },
 };
 
 export const siteMeta = {

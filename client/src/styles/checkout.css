@@ -7,7 +7,7 @@
 .track-loading,
 .admin-loading {
   display: flex;
-  min-height: 12rem;
+  min-height: max(12rem, calc(100dvh - 8rem));
   align-items: center;
   justify-content: center;
   gap: 0.7rem;

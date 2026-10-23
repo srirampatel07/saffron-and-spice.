@@ -22,7 +22,6 @@ import {
   PAYMENT_METHOD_LABELS,
   PAYMENT_STATUS_META,
 } from '../lib/orderStatus';
-import usePageTitle from '../lib/usePageTitle';
 import usePublicConfig from '../lib/usePublicConfig';
 
 const TOKEN_KEY = 'saffron-spice.adminToken.v1';
@@ -170,7 +169,6 @@ function AdminOrderCard({ order, updating, onUpdateStatus }) {
 }
 
 export default function AdminPage() {
-  usePageTitle('Staff admin');
   const { push } = useToast();
   const publicConfig = usePublicConfig();
   const [token, setToken] = useState(readToken);

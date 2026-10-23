@@ -299,6 +299,26 @@ export function attachRazorpayOrder(db, orderNumber, razorpayOrderId) {
 }
 
 export function markOrderPaid(db, { orderNumber, razorpayPaymentId = null }) {
+  const normalizedOrderNumber = String(orderNumber).trim().toUpperCase();
+  const current = findOrderRowByNumber(db, normalizedOrderNumber);
+  if (!current) return null;
+
+  // A provider payment ID may settle at most one local order. The check is
+  // synchronous here; a multi-instance deployment should also enforce this
+  // with a unique index or database constraint.
+  if (razorpayPaymentId) {
+    const usedByAnotherOrder = db
+      .prepare('SELECT 1 FROM orders WHERE razorpay_payment_id = ? AND order_number <> ?')
+      .get(razorpayPaymentId, normalizedOrderNumber);
+    if (usedByAnotherOrder) return null;
+  }
+
+  // Replayed provider events must not overwrite an already-paid order or its
+  // payment ID.
+  if (current.payment_status === 'paid') {
+    return getOrderByNumber(db, normalizedOrderNumber);
+  }
+
   const now = new Date().toISOString();
   db.prepare(`
     UPDATE orders
@@ -308,9 +328,9 @@ export function markOrderPaid(db, { orderNumber, razorpayPaymentId = null }) {
       status = CASE WHEN status = 'pending' THEN 'confirmed' ELSE status END,
       updated_at = ?
     WHERE order_number = ?
-  `).run(razorpayPaymentId, now, String(orderNumber).trim().toUpperCase());
+  `).run(razorpayPaymentId, now, normalizedOrderNumber);
 
-  return getOrderByNumber(db, orderNumber);
+  return getOrderByNumber(db, normalizedOrderNumber);
 }
 
 export function markPaymentFailed(db, orderNumber) {

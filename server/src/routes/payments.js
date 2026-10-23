@@ -13,17 +13,25 @@ import {
 } from '../services/orders.js';
 import { createProviderOrder } from '../services/razorpay.js';
 
-const createOrderSchema = z.object({
-  orderNumber: z.string().trim().min(6).max(40),
-  phone: z.string().trim().min(10).max(16),
-});
+const ORDER_NUMBER_INPUT = /^SS-\d{6}-[A-F0-9]{6}$/i;
+const RAZORPAY_ID = /^[A-Za-z0-9_]{4,100}$/;
+const RAZORPAY_SIGNATURE = /^[a-f0-9]{64}$/i;
 
-const verifySchema = z.object({
-  orderNumber: z.string().trim().min(6).max(40),
-  razorpayOrderId: z.string().trim().min(4).max(100),
-  razorpayPaymentId: z.string().trim().min(4).max(100),
-  razorpaySignature: z.string().trim().min(10).max(256),
-});
+const createOrderSchema = z
+  .object({
+    orderNumber: z.string().trim().regex(ORDER_NUMBER_INPUT, 'Invalid order number.'),
+    phone: z.string().trim().min(10).max(16),
+  })
+  .strict();
+
+const verifySchema = z
+  .object({
+    orderNumber: z.string().trim().regex(ORDER_NUMBER_INPUT, 'Invalid order number.'),
+    razorpayOrderId: z.string().trim().regex(RAZORPAY_ID, 'Invalid Razorpay order ID.'),
+    razorpayPaymentId: z.string().trim().regex(RAZORPAY_ID, 'Invalid Razorpay payment ID.'),
+    razorpaySignature: z.string().trim().regex(RAZORPAY_SIGNATURE, 'Invalid Razorpay signature.'),
+  })
+  .strict();
 
 function validationError(result) {
   return createHttpError(
@@ -157,6 +165,13 @@ export function paymentsRouter(db) {
     }
 
     const paidOrder = markOrderPaid(db, { orderNumber, razorpayPaymentId });
+    if (!paidOrder) {
+      throw createHttpError(
+        409,
+        'That payment is already linked to another order. Please contact us with your order number.',
+        'PAYMENT_ALREADY_USED',
+      );
+    }
     res.json({ order: paidOrder, alreadyVerified: false });
   });
 

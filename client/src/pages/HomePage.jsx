@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import DishCard from '../components/DishCard';
+import SafeImage from '../components/SafeImage';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,7 +16,6 @@ import {
 import { restaurant } from '../config';
 import { useMenu } from '../context/menu';
 import { formatMoney } from '../lib/format';
-import usePageTitle from '../lib/usePageTitle';
 
 function DishCardSkeleton() {
   return (
@@ -36,7 +36,6 @@ function DishCardSkeleton() {
 }
 
 export default function HomePage() {
-  usePageTitle();
   const { items, categories, isLoading, status, error, refresh } = useMenu();
   const currentYear = new Date().getFullYear();
   const years = currentYear - restaurant.since;
@@ -94,12 +93,14 @@ export default function HomePage() {
               <span />
             </div>
             <div className="hero-frame">
-              <img
-                src="/images/hero-thali.svg"
+              <SafeImage
+                src="/images/hero-thali-800.webp"
+                srcSet="/images/hero-thali-640.webp 640w, /images/hero-thali-800.webp 800w, /images/hero-thali-1120.webp 1120w, /images/hero-thali.webp 1920w"
+                sizes="(max-width: 720px) 92vw, (max-width: 1100px) 46vw, 34rem"
+                fallbackSrc="/images/hero-thali.svg"
                 alt="An overhead Indian thali with butter chicken, dal makhani, seasonal vegetables, raita and saffron rice"
-                width="1000"
-                height="1250"
-                fetchPriority="high"
+                width="1920"
+                height="2400"
               />
               <span className="hero-frame__shade" aria-hidden="true" />
             </div>
@@ -191,12 +192,16 @@ export default function HomePage() {
         <div className="container story-section__grid">
           <div className="story-section__media">
             <div className="arch-frame arch-frame--portrait">
-              <img
-                src="/images/story-spice.svg"
-                alt="A stone mortar of whole spices surrounded by bowls of turmeric, chilli and cardamom"
+              <SafeImage
+                src="/images/story-spice-720.webp"
+                srcSet="/images/story-spice-480.webp 480w, /images/story-spice-720.webp 720w, /images/story-spice.webp 900w"
+                sizes="(max-width: 720px) 88vw, 29rem"
+                fallbackSrc="/images/story-spice.svg"
+                alt="Bowls of turmeric, chilli, cardamom and whole spices at a spice market"
                 width="900"
                 height="1100"
                 loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="story-plaque">
@@ -225,6 +230,12 @@ export default function HomePage() {
               “We don&rsquo;t rush a dish. We let it arrive when it&rsquo;s ready.”
               <footer>The kitchen at {restaurant.name}</footer>
             </blockquote>
+            <div className="mt-3">
+              <Link className="text-link" to="/story">
+                Read the full story
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
             <div className="story-stats">
               <div>
                 <strong>{years}</strong>
@@ -250,7 +261,7 @@ export default function HomePage() {
         </div>
         <ol className="ritual-grid">
           <li className="ritual-step">
-            <span className="ritual-step__number">01</span>
+            <span className="ritual-step__number" aria-hidden="true">01</span>
             <span className="ritual-step__icon" aria-hidden="true">
               <Utensils size={22} />
             </span>
@@ -258,7 +269,7 @@ export default function HomePage() {
             <p>Wander through regional favourites, add what tempts you, and build a table worth sharing.</p>
           </li>
           <li className="ritual-step">
-            <span className="ritual-step__number">02</span>
+            <span className="ritual-step__number" aria-hidden="true">02</span>
             <span className="ritual-step__icon" aria-hidden="true">
               <Sparkles size={22} />
             </span>
@@ -266,7 +277,7 @@ export default function HomePage() {
             <p>Nothing sits under a lamp. Tandoors are lit, spices are bloomed, and your order is cooked fresh.</p>
           </li>
           <li className="ritual-step">
-            <span className="ritual-step__number">03</span>
+            <span className="ritual-step__number" aria-hidden="true">03</span>
             <span className="ritual-step__icon" aria-hidden="true">
               <Truck size={22} />
             </span>
@@ -279,12 +290,16 @@ export default function HomePage() {
       <section id="visit" className="visit-section section">
         <div className="container visit-section__grid">
           <div className="visit-section__media">
-            <img
-              src="/images/visit-room.svg"
+            <SafeImage
+              src="/images/visit-room-960.webp"
+              srcSet="/images/visit-room-640.webp 640w, /images/visit-room-960.webp 960w, /images/visit-room.webp 1200w"
+              sizes="(max-width: 720px) 92vw, (max-width: 1100px) 46vw, 34rem"
+              fallbackSrc="/images/visit-room.svg"
               alt={`Warmly lit dining arches, pendant lamps and set tables at ${restaurant.name}`}
               width="1200"
-              height="800"
+              height="900"
               loading="lazy"
+              decoding="async"
             />
             <div className="visit-section__badge">
               <Check size={15} aria-hidden="true" />

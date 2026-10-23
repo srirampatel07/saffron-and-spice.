@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Truck,
 } from '../components/Icons';
+import SafeImage from '../components/SafeImage';
 import VegBadge from '../components/VegBadge';
 import { restaurant } from '../config';
 import { useCart } from '../context/cart';
@@ -21,7 +22,6 @@ import { api } from '../lib/api';
 import { formatMoney, pluralize } from '../lib/format';
 import { rememberOrder } from '../lib/orderMemory';
 import { payForOrder } from '../lib/razorpay';
-import usePageTitle from '../lib/usePageTitle';
 import usePublicConfig from '../lib/usePublicConfig';
 import { validateCheckout } from '../lib/validation';
 
@@ -33,7 +33,6 @@ function createIdempotencyKey() {
 }
 
 export default function CheckoutPage() {
-  usePageTitle('Checkout');
   const cart = useCart();
   const menu = useMenu();
   const navigate = useNavigate();
@@ -562,7 +561,7 @@ export default function CheckoutPage() {
               {cart.lines.map((line) => (
                 <li key={line.id} className="checkout-summary__item">
                   <div className="checkout-summary__image">
-                    <img src={line.image} alt="" width="56" height="56" />
+                    <SafeImage src={line.image} alt="" width="56" height="56" decoding="async" />
                     <span aria-hidden="true">{line.quantity}</span>
                   </div>
                   <div className="checkout-summary__item-copy">
