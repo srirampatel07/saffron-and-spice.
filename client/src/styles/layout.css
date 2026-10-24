@@ -319,6 +319,46 @@
   text-underline-offset: 0.25em;
 }
 
+.footer__contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 0.35rem 0.15rem;
+}
+
+.footer__action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(237, 196, 119, 0.24);
+  border-radius: var(--radius-pill);
+  color: var(--color-cream-100);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition:
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+}
+
+.footer__action svg {
+  flex: none;
+}
+
+.footer__action:hover {
+  border-color: var(--color-saffron-400);
+  background: rgba(237, 196, 119, 0.1);
+  color: var(--color-cream-50);
+}
+
+.footer__action--whatsapp {
+  color: var(--color-saffron-300);
+}
+
 .footer__hours {
   display: grid;
   gap: 0.2rem;
@@ -367,6 +407,94 @@
   background: currentColor;
   content: '';
   opacity: 0.45;
+}
+
+/* ---------- Floating contact ---------- */
+.floating-contact {
+  position: fixed;
+  right: clamp(1rem, 4vw, 2rem);
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  animation: floating-contact-in 360ms var(--ease-spring) both;
+}
+
+.floating-contact__button {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border: 1px solid rgba(255, 253, 248, 0.24);
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  color: var(--color-cream-50);
+  transition:
+    background-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    transform 140ms var(--ease-out);
+}
+
+.floating-contact__button:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.floating-contact__button:active {
+  transform: scale(0.94);
+}
+
+.floating-contact__button--whatsapp {
+  background: var(--color-veg);
+}
+
+.floating-contact__button--call {
+  background: var(--color-maroon-800);
+}
+
+.floating-contact__button:focus-visible,
+.footer__action:focus-visible {
+  outline: 3px solid var(--color-saffron-300);
+  outline-offset: 3px;
+}
+
+@keyframes floating-contact-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.96);
+  }
+}
+
+@media (max-width: 760px) {
+  body:has(.mobile-cart-bar) .floating-contact {
+    bottom: calc(5.9rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 900px) {
+  body:has(.mobile-nav--open) .floating-contact {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-contact {
+    animation: none;
+  }
+
+  .floating-contact__button {
+    transition: none;
+  }
+
+  .footer__action {
+    transition: none;
+  }
+
+  .floating-contact__button:hover,
+  .floating-contact__button:active {
+    transform: none;
+  }
 }
 
 @media (max-width: 900px) {

@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
-import { ArrowRight, CheckCircle, Clock, CreditCard, MapPin, Phone } from '../components/Icons';
+import { ArrowRight, CheckCircle, Clock, CreditCard, MapPin, Phone, WhatsApp } from '../components/Icons';
 import OrderReceipt from '../components/OrderReceipt';
 import OrderTimeline from '../components/OrderTimeline';
 import { restaurant } from '../config';
 import { useToast } from '../context/toast';
 import { api } from '../lib/api';
+import { getWhatsAppHref } from '../lib/contact';
 import { formatDateTime, formatMoney, formatPhone } from '../lib/format';
 import { rememberOrder, readRememberedOrder } from '../lib/orderMemory';
 import { PAYMENT_STATUS_META, paymentIsPending } from '../lib/orderStatus';
@@ -252,6 +253,17 @@ export default function OrderConfirmationPage() {
             <Button as={Link} to={`/track?order=${encodeURIComponent(order.orderNumber)}`} size="lg" className="btn--block">
               Track your order
               <ArrowRight size={17} />
+            </Button>
+            <Button
+              as="a"
+              href={getWhatsAppHref({ orderNumber: order.orderNumber })}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="secondary"
+              className="btn--block"
+            >
+              <WhatsApp size={17} aria-hidden="true" />
+              Ask about this order
             </Button>
             <Button as={Link} to="/menu" variant="secondary" className="btn--block">
               Back to the menu

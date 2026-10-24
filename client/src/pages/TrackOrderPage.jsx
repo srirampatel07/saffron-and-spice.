@@ -13,6 +13,7 @@ import {
   RefreshCw,
   Search,
   Truck,
+  WhatsApp,
 } from '../components/Icons';
 import OrderReceipt from '../components/OrderReceipt';
 import OrderTimeline from '../components/OrderTimeline';
@@ -20,6 +21,7 @@ import SafeImage from '../components/SafeImage';
 import { restaurant } from '../config';
 import { useToast } from '../context/toast';
 import { api } from '../lib/api';
+import { getWhatsAppHref } from '../lib/contact';
 import { formatDateTime, formatMoney, formatPhone, pluralize } from '../lib/format';
 import { readRememberedOrder, rememberOrder } from '../lib/orderMemory';
 import {
@@ -451,6 +453,17 @@ export default function TrackOrderPage() {
                 </section>
 
                 <div className="confirmation-actions">
+                  <Button
+                    as="a"
+                    href={getWhatsAppHref({ orderNumber: order.orderNumber })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    className="btn--block"
+                  >
+                    <WhatsApp size={17} aria-hidden="true" />
+                    Ask about this order
+                  </Button>
                   <Button as={Link} to="/menu" variant="secondary" className="btn--block">
                     Order something else
                   </Button>

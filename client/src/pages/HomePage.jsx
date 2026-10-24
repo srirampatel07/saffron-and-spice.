@@ -12,9 +12,11 @@ import {
   Sparkles,
   Truck,
   Utensils,
+  WhatsApp,
 } from '../components/Icons';
 import { restaurant } from '../config';
 import { useMenu } from '../context/menu';
+import { getTelHref, getWhatsAppHref } from '../lib/contact';
 import { formatMoney } from '../lib/format';
 
 function DishCardSkeleton() {
@@ -344,9 +346,19 @@ export default function HomePage() {
               </div>
             </div>
             <div className="visit-section__actions">
-              <Button as="a" href={`tel:${restaurant.phoneHref}`} variant="secondary">
+              <Button as="a" href={getTelHref()} variant="secondary">
                 <Phone size={16} />
-                Call to reserve
+                Call {restaurant.phone}
+              </Button>
+              <Button
+                as="a"
+                href={getWhatsAppHref()}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+              >
+                <WhatsApp size={16} />
+                WhatsApp
               </Button>
               <Button as={Link} to="/menu">
                 Order in

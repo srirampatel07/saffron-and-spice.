@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import Brand from './Brand';
-import { MapPin } from './Icons';
+import { MapPin, Phone, WhatsApp } from './Icons';
 import { restaurant } from '../config';
+import { getTelHref, getWhatsAppHref } from '../lib/contact';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -79,9 +80,22 @@ export default function Footer() {
               <div className="footer__hours">
                 <span>{restaurant.closedNote}</span>
               </div>
-              <a className="footer__link" href={`tel:${restaurant.phoneHref}`}>
-                {restaurant.phone}
-              </a>
+              <div className="footer__contact-actions">
+                <a
+                  className="footer__action footer__action--whatsapp"
+                  href={getWhatsAppHref()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat with Saffron & Spice on WhatsApp"
+                >
+                  <WhatsApp size={16} />
+                  WhatsApp
+                </a>
+                <a className="footer__action" href={getTelHref()}>
+                  <Phone size={16} />
+                  {restaurant.phone}
+                </a>
+              </div>
               <a className="footer__link" href={`mailto:${restaurant.email}`}>
                 {restaurant.email}
               </a>

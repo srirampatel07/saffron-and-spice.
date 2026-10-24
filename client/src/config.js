@@ -5,8 +5,8 @@ export const restaurant = {
     'Slow-cooked Indian classics, hand-ground spice blends, and a table that always has room for one more.',
   since: 1998,
   logoMark: 'S&S',
-  phone: '+91 98765 43210',
-  phoneHref: '+919876543210',
+  phone: '+91 93810 74674',
+  phoneHref: '+919381074674',
   email: 'hello@saffronandspice.in',
   address: {
     line1: '14 Lavelle Road',
@@ -25,6 +25,9 @@ export const restaurant = {
   deliveryFee: 49,
   taxRate: 0.05,
   adminPath: '/admin',
+  whatsapp: {
+    defaultMessage: "Hi Saffron & Spice! I'd like to enquire about your menu and orders.",
+  },
   social: {
     instagram: 'https://instagram.com',
   },

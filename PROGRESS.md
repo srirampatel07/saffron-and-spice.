@@ -296,3 +296,61 @@ See `SECURITY_AUDIT.md` and `SEO_NOTES.md` for the detailed records. No commits,
 - **No security regressions:** Admin password/token validation, login rate limiting and delay, Helmet/CSP/HSTS, strict schemas, webhook checks, and payment settings were not changed.
 - **Validation:** `npm.cmd run lint` 0/0; `npm.cmd test` 33/33; `npm.cmd run build` passed; `npm.cmd run check:seo` 153/153.
 - **Restart:** After changing `CLIENT_ORIGINS`, restart the API so dotenv re-reads `.env`. Vite reloads `vite.config.js` on its own; restart the Vite dev server if it does not. Replace the tunnel origin in `.env` when the Cloudflare hostname changes; no source edit is required. Localhost remains allowed through `CLIENT_URL`.
+
+---
+
+## WhatsApp + Call
+
+**Status: complete.** Last updated 24 October 2026.
+
+### Checkpoint 0 - Baseline and plan
+
+- Started: 24 October 2026. `git status --short --untracked-files=all` returned no output, so the working tree was clean at the recorded baseline.
+- Baseline checks, run before source edits:
+  - `npm.cmd run lint` -> passed, 0 errors and 0 warnings.
+  - `npm.cmd test` -> 33 passed, 0 failed, 0 skipped.
+  - `npm.cmd run build` -> passed; Vite client build plus prepass/static route HTML.
+  - `npm.cmd run check:seo` -> 153 checks passed, 0 failed.
+- Baseline is the comparison point; any failure after this section is only a regression if it differs from these results.
+- Intended and actual changed files:
+  - `client/src/config.js` - demo phone display/href and default WhatsApp message in one existing config location.
+  - `client/src/lib/contact.js` - pure WhatsApp/tel URL, visible-order validation, and route-visibility helpers.
+  - `client/src/components/Icons.jsx` - inline WhatsApp SVG; no new dependency.
+  - `client/src/components/FloatingContact.jsx` - shared floating WhatsApp and call actions.
+  - `client/src/components/Layout.jsx` - mount the shared actions on public pages.
+  - `client/src/pages/HomePage.jsx` and `client/src/components/Footer.jsx` - WhatsApp and call actions in the existing contact areas, with the phone kept visible.
+  - `client/src/pages/OrderConfirmationPage.jsx` and `client/src/pages/TrackOrderPage.jsx` - inline order-specific WhatsApp action once the order is visible.
+  - `client/src/styles/layout.css` - footer actions, floating-button, focus, reduced-motion, cart-bar and mobile-navigation guards.
+  - `server/test/contact-links.test.js` - focused URL, message, tel and route-visibility tests through the existing test runner.
+  - `PROGRESS.md` - this record.
+- Guardrails: no admin/auth, CORS, payment, database, structured-data, sitemap or robots changes; `emitBusinessDetails` stays false; no WhatsApp message or call is sent by this code.
+
+### Checkpoint 1 - Implementation
+
+- Updated the existing `restaurant.phone`/`phoneHref` values to `+91 93810 74674` / `+919381074674`, so existing tel links reuse the supplied number. The default WhatsApp message lives only in `restaurant.whatsapp.defaultMessage`.
+- Added `getTelHref()`, `getWhatsAppHref()`, `normalizeVisibleOrderNumber()`, and `shouldShowFloatingContact()` in `client/src/lib/contact.js`. WhatsApp URLs use `https://wa.me/919381074674?text=...`; order messages are only generated for the validated `SS-\d{6}-[A-F0-9]{6}` format and contain only the order number. Invalid or missing numbers fall back to the default message.
+- Added the inline WhatsApp SVG and a shared `FloatingContact` component with visible focus rings, 52px targets, accessible labels, `target="_blank"`, and `rel="noopener noreferrer"`.
+- Floating actions are hidden on `/admin`, `/checkout`, `/track`, `/order/*`, while the cart drawer is open, and while the mobile navigation is open. On the menu, they sit above the mobile cart bar; the mobile nav guard has a CSS fallback as well as the React route/cart guard.
+- Added WhatsApp and call actions to the homepage visit/contact block and the footer. Both areas keep the formatted phone number visible as text.
+- Added an order-specific WhatsApp button ("Ask about this order") to the confirmation and tracking result areas. It uses the loaded order number already displayed on that page. The floating pair is intentionally not shown on `/order` and `/track`: at 390x844 it covered the tracking form and order timeline, so inline actions are used instead to satisfy the no-overlap requirement.
+- Added reduced-motion handling, focus styles, cart-bar offset, and no horizontal overflow.
+- Considered a shared visible-order React context, but it caused Vite to merge the 57 kB API chunk into the initial bundle. The final inline-action design keeps the baseline chunk split and removes that shared state.
+
+### Checkpoint 2 - Verification
+
+- Final checks:
+  - `npm.cmd run lint` -> 0 errors, 0 warnings.
+  - `npm.cmd test` -> 38 passed, 0 failed (33 baseline + 5 contact-link tests).
+  - `npm.cmd run build` -> exit code 0; Vite client build plus prerender/static routes.
+  - `npm.cmd run check:seo` -> 153 checks passed, 0 failed.
+- Production bundle: initial JS `309.71 kB` / `91.35 kB` gzip; separate API chunk `57.96 kB` / `20.95 kB` gzip; lazy order page `7.94 kB` / `2.54 kB` gzip. The API chunk remains separate from the initial bundle.
+- Browser checks against the production build at 390x844 with Chrome CDP:
+  - Viewport and document width both `390px`; no horizontal overflow.
+  - Floating group measured `52 x 113.59px`, right `16px`, bottom `20px`; accessible labels and new-tab/rel attributes were present.
+  - On `/menu`, the mobile cart bar left a `24.27px` gap below the floating group. Opening the cart drawer hid the floating group; opening mobile navigation hid it too.
+  - `/checkout`, `/admin`, `/track`, and `/order/*` rendered no floating group. `/track` rendered its form without the overlay.
+  - An injected visible order state on `/order/SS-261022-C7BD1F` produced the exact inline WhatsApp message `Hi Saffron & Spice! I'd like to enquire about order SS-261022-C7BD1F.` with `target="_blank"` and `rel="noopener noreferrer"`.
+  - Homepage and footer use the expected default message and `tel:+919381074674`; the phone is visible in both. The floating group did not overlap the footer contact actions at 1440x1000.
+- No actual WhatsApp messages or calls were sent. No commits, pushes, or deployments were made.
+- Unrelated working-tree entries observed at final check (left untouched): `client/package.json` and `package-lock.json` (`motion` dependency), plus `.21st/`, `.claude/`, `.codex/`, and `.cursor/` skill folders.
+- Remaining manual check: exercise the `wa.me` and `tel:` links on a physical phone and confirm the final phone/message copy with the restaurant.

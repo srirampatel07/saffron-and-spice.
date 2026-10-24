@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import CartDrawer from './CartDrawer';
+import FloatingContact from './FloatingContact';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import ScrollToTop from './ScrollToTop';
@@ -17,6 +18,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <FloatingContact />
       <CartDrawer />
       <ScrollToTop />
     </div>
